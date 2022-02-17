@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: underwriter-deployment
+  labels:
+    app: underwriter-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: underwriter-microservice
+  template:
+    metadata:
+      labels:
+        app: underwriter-microservice
+    spec:
+      containers:
+        - name: underwriter-microservice
+          image: whalemichael/underwriter-microservice:1.0
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 250m # 0.25 CPU
+            limits:
+              memory: 512Mi # Exactly half of 1 GiB
+              cpu: 500m # 0.5 CPU
+          ports:
+            - name: uw-port
+              containerPort: 8001
+          env:
+          - name: APP_PORT
+            value: "8001"
+          envFrom:
+          - secretRef:
+              name: microservice-secret
+          - configMapRef:
+              name: microservice-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: underwriter-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: underwriter-microservice
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: uw-port
+      nodePort: 30001
