@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: user-microservice
-          image: ${AWS_ACC_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mm-bank-microservice:latest
+          image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mm-user-microservice:latest
           resources:
             requests:
               memory: 64Mi
@@ -41,11 +41,10 @@ kind: Service
 metadata:
   name: user-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: user-microservice
   ports:
     - protocol: TCP
       port: 8003
       targetPort: user-port
-      nodePort: 30003

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: transaction-microservice
-          image: whalemichael/transaction-microservice:1.0
+          image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mm-transaction-microservice:latest
           resources:
             requests:
               memory: 64Mi
@@ -41,11 +41,10 @@ kind: Service
 metadata:
   name: transaction-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: transaction-microservice
   ports:
     - protocol: TCP
       port: 8004
       targetPort: ta-port
-      nodePort: 30004

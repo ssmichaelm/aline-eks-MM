@@ -5,7 +5,7 @@ metadata:
   labels:
     app: aline-db
 spec:
-  externalName: # RDS instance endpoint, parameterize
+  externalName: ${DB_ENDPOINT} # RDS instance endpoint, parameterize
   type: ExternalName
   selector:
     app: aline-db

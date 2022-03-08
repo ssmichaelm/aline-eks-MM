@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: underwriter-microservice
-          image: whalemichael/underwriter-microservice:1.0
+          image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mm-underwriter-microservice:latest
           resources:
             requests:
               memory: 64Mi
@@ -41,11 +41,10 @@ kind: Service
 metadata:
   name: underwriter-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: underwriter-microservice
   ports:
     - protocol: TCP
       port: 8001
       targetPort: uw-port
-      nodePort: 30001

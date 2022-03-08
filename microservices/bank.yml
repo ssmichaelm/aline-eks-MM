@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: bank-microservice
-          image: whalemichael/bank-microservice:1.0
+          image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mm-bank-microservice:latest
           resources:
             requests:
               memory: 64Mi
@@ -41,11 +41,10 @@ kind: Service
 metadata:
   name: bank-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: bank-microservice
   ports:
     - protocol: TCP
       port: 8002
       targetPort: bank-port
-      nodePort: 30002
